@@ -1,4 +1,4 @@
-name: 一加13和a5p构建
+name: 一加13t构建 
 on:
   workflow_dispatch:
     inputs:
@@ -7,13 +7,9 @@ on:
         required: true
         default: 'sm8750'
       FEIL:
-        type: choice
         description: "配置文件"
         required: true
-        default: 'oneplus_13'
-        options: 
-         - oneplus_13
-         - oneplus_ace5_pro
+        default: 'oneplus_13t'
       CPUD:
         description: "处理器代号"
         required: true
@@ -31,13 +27,9 @@ on:
         required: true
         default: '-By-kuan-FutabaWa'
       KERNEL_TIME:
-       type: choice
-       description: "内核构建日期更改(默认显示的是13原厂，a5p选第二个)"
+       description: "内核构建日期更改(默认为原厂)"
        required: true
        default: '2024-12-17 23:36:49 UTC'
-       options: 
-       - 2024-12-17 23:36:49 UTC
-       - 2024-12-4 02:11:16 UTC
       enable_feature_x:
        description: "是否启用kpm"
        required: false
@@ -77,7 +69,7 @@ jobs:
           
       - name: Configure Git
         run: |
-         git config --global user.name "build"
+         git config --global user.name "Futaba"
          git config --global user.email "3199167602@qq.com"
 
       - name: Install dependencies
@@ -127,8 +119,8 @@ jobs:
            # Apply patches
            cd ./common
 
-           sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch
-           sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch
+           #sed -i 's/-32,12 +32,38/-32,11 +32,37/g' 50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch
+           #sed -i '/#include <trace\/hooks\/fs.h>/d' 50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch
 
            patch -p1 < 50_add_susfs_in_gki-${{ github.event.inputs.ANDROID_VERSION }}-${{ github.event.inputs.KERNEL_VERSION }}.patch || true
            cp ../../SukiSU_patch/hooks/syscall_hooks.patch ./
